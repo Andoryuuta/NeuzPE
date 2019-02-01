@@ -1,0 +1,97 @@
+#pragma once
+
+#include <Windows.h>
+#include <cstdint>
+#include "dplay_stub.h"
+#include <string>
+
+namespace Net {
+
+	struct CDPMng;
+	struct CDPMng_vtable;
+	struct CDPSock;
+	struct CClientSock;
+	struct CClientSock_vtable;
+
+	typedef BOOL(__thiscall *DoSend_t)(CClientSock *, uint8_t*, uint32_t, uint32_t);
+	typedef void(__thiscall *MessageHandler_t)(CDPMng*, LPDPMSG_GENERIC lpMsg, DWORD dwMsgSize, DPID idFrom);
+
+	struct CDPMng {
+		CDPMng_vtable* vtable;
+		CDPSock* m_pDPSock;
+		HANDLE m_hRecvThread;
+		HANDLE m_hClose;
+	};
+
+	struct CDPMng_vtable {
+		void* virtual_dtor;
+		MessageHandler_t SysMessageHandler;
+		MessageHandler_t UserMessageHandler;
+	};
+
+	struct CDPSock
+	{
+		void* vtable;
+		CClientSock *m_pSock;
+		u_short	m_uPort;
+		char	m_lpAddr[32];
+		/*
+		u_long	m_uIoWorker;
+		list<HANDLE>	m_listthread;
+		CMclCritSec		m_locklistthread;
+		HANDLE	m_hCompletionPort;
+		WSAEVENT	m_hClose;
+		HANDLE	m_hRecv;
+		CSock*	m_pSockThreaded;
+	public:
+		CBufferQueue<T>	m_lspRecvBuffer;
+		BOOL	m_fServer;
+		*/
+	};
+
+	struct CClientSock
+	{
+		CClientSock_vtable *vt;
+		int field_4;
+		int field_8;
+		int field_C;
+		int field_10;
+		int field_14;
+		int field_18;
+		int field_1C;
+		int field_20;
+		int field_24;
+		int field_28;
+	};
+
+	struct CClientSock_vtable
+	{
+		int field_0;
+		int field_4;
+		int field_8;
+		int field_C;
+		int field_10;
+		int field_14;
+		int field_18;
+		int field_1C;
+		DoSend_t DoSend;
+		int field_24;
+		int field_28;
+	};
+
+	extern DoSend_t original_dosend;
+	extern CClientSock * last_used_CClientSock;
+
+	extern CDPMng** g_dpCertified;
+	extern CDPMng** g_DPlay;
+	extern CDPMng** g_dpLoginClient;
+
+	std::string GetNameForCClientSock(CClientSock* sock);
+	CClientSock* GetCClientSockForName(std::string name);
+
+	BOOL __fastcall DoSendHook(CClientSock * pThis, void* EDX, uint8_t* data, uint32_t data_size, uint32_t unk);
+
+	// Does sigscans for the g_DPlay (world) and g_dpLoginClient (login) globals.
+	// Returns false on failure.
+	bool InitDPObjects();
+};
