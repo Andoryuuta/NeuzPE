@@ -8,7 +8,6 @@
 
 namespace Net {
 	extern DoSend_t original_dosend = nullptr;
-	extern CClientSock* last_used_CClientSock = nullptr;
 
 	extern CDPMng** g_dpCertified = nullptr;
 	extern CDPMng** g_DPlay = nullptr;
@@ -93,36 +92,11 @@ namespace Net {
 
 
 	BOOL __fastcall DoSendHook(CClientSock * pThis, void* EDX, uint8_t* data, uint32_t data_size, uint32_t unk) {
-
-		last_used_CClientSock = pThis;
 		std::vector<uint8_t> v(data, data + data_size);
 		std::cout << "[Send] -> " << Util::bytes_to_hex_string(v) << std::endl;
 
+		GUI::Get()->LogPacket(pThis, v);
 
-		/*
-		// Old GUI
-		{
-			nana::internal_scope_guard lock;
-			//GUI::Get()->list.at(0).append(bytes_to_hexw_string(v));
-
-			auto cat = GUI::Get()->list.at(0);
-			auto pos = cat.size();
-
-			//std::stringstream ss;
-			//ss << std::hex << (uint32_t)pThis;
-			//cat.push_back(ss.str());
-			cat.push_back(GetNameForCClientSock(pThis));
-			cat.at(pos).text(1, Util::bytes_to_hex_string(v));
-			GUI::Get()->list.scroll(true);
-		}
-		*/
-
-		// New GUI
-		{
-			GUI::Get()->LogPacket(pThis, v);
-		}
-
-		//std::cout << "DoSendHook sending " << data_size << "bytes!" << std::endl;
 		return original_dosend(pThis, data, data_size, unk);
 	}
 };

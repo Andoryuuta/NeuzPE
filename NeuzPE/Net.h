@@ -35,18 +35,6 @@ namespace Net {
 		CClientSock *m_pSock;
 		u_short	m_uPort;
 		char	m_lpAddr[32];
-		/*
-		u_long	m_uIoWorker;
-		list<HANDLE>	m_listthread;
-		CMclCritSec		m_locklistthread;
-		HANDLE	m_hCompletionPort;
-		WSAEVENT	m_hClose;
-		HANDLE	m_hRecv;
-		CSock*	m_pSockThreaded;
-	public:
-		CBufferQueue<T>	m_lspRecvBuffer;
-		BOOL	m_fServer;
-		*/
 	};
 
 	struct CClientSock
@@ -80,7 +68,6 @@ namespace Net {
 	};
 
 	extern DoSend_t original_dosend;
-	extern CClientSock * last_used_CClientSock;
 
 	extern CDPMng** g_dpCertified;
 	extern CDPMng** g_DPlay;

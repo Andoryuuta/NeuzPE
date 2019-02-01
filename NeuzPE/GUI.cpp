@@ -7,51 +7,6 @@
 
 GUI::GUI()
 {
-	/*
-	fm.caption("FlyFF Packet Editor prototype");
-	list.create(fm);
-	//list.enable_single(true, false);
-	list.show_header(true);
-	list.append_header("Server");
-	list.append_header("Packet");
-
-	text.create(fm);
-	text.line_wrapped(false);
-	text.multi_lines(false);
-
-	btn.create(fm);
-	btn.caption("Send");
-
-	layout.bind(fm);
-	layout.div("vert<lb weight=75%><vert<textbox><sendbtn max=100>>");
-	layout.field("lb") << list;
-	layout.field("textbox") << text;
-	layout.field("sendbtn") << btn;
-	layout.collocate();
-	
-	// Select packet from list
-	list.events().selected([this](const arg_listbox& arg) {
-		this->text.reset(arg.item.text(1));
-	});
-
-	// Send
-	btn.events().click([this]
-	{
-		auto optstr = this->text.getline(0);
-		if (optstr.has_value()) {
-			auto pkt_to_send = Util::hex_string_to_bytes(optstr.value());
-			std::cout << "Gonna send: " << Util::bytes_to_hex_string(pkt_to_send) << std::endl;
-			Net::original_dosend(Net::last_used_CClientSock, pkt_to_send.data(), pkt_to_send.size(), 1);
-		}
-		//Todo: insert
-	});
-	fm.show();
-	*/
-
-
-
-
-	// New GUI:
 	// Select packet from list
 ;	pfm.packet_listbox.events().selected([this](const arg_listbox& arg) {
 		const PacketTemplate* ptr = arg.item.value_ptr<PacketTemplate>();
@@ -75,14 +30,7 @@ GUI::GUI()
 				std::cout << "NEWGUI: Gonna send: " << Util::bytes_to_hex_string(pkt_to_send) << std::endl;
 				Net::original_dosend(sock, pkt_to_send.data(), pkt_to_send.size(), 1);
 			}
-
-			/*
-			auto pkt_to_send = Util::hex_string_to_bytes(optstr.value());
-			std::cout << "Gonna send: " << Util::bytes_to_hex_string(pkt_to_send) << std::endl;
-			Net::original_dosend(Net::last_used_CClientSock, pkt_to_send.data(), pkt_to_send.size(), 1);
-			*/
 		}
-		//Todo: insert
 	});
 
 
