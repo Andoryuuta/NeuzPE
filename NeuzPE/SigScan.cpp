@@ -38,7 +38,7 @@ uint64_t parseHex(std::string s) {
 	return total;
 }
 
-uint32_t SigScan::Scan(uint32_t start_address, std::string sig) {
+uint32_t SigScan::Scan(uint32_t start_address, const std::string& sig) {
 	auto split = SpaceSplit(sig);
 	std::vector<uint8_t> sig_bytes;
 	std::vector<char> sig_wildcards;

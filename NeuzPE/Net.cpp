@@ -20,21 +20,27 @@ namespace Net {
 		//uint32_t image_base = (uint32_t)GetModuleHandle(NULL);
 		auto g_dpCertified_addr = SigScan::Scan(0x401000, "B9 ?? ?? ?? ?? E8 ?? ?? ?? ?? 68 E8 03 00 00 FF 15 ?? ?? ?? ?? EB ??");
 		if (g_dpCertified_addr == 0) {
+#ifdef NEUZPE_DEBUG_LOG
 			std::cout << "[ERROR] g_dpCertified scan failed!" << std::endl;
+#endif
 			return false;
 		}
 		g_dpCertified = (CDPMng**)(g_dpCertified_addr + 1);
 
 		auto g_DPlay_addr = SigScan::Scan(0x401000, "B9 ?? ?? ?? ?? E8 ?? ?? ?? ?? 8D ?? ?? ?? C7 ?? ?? ?? FF FF FF FF FF 15 ?? ?? ?? ?? 6A 01");
 		if (g_DPlay_addr == 0) {
+#ifdef NEUZPE_DEBUG_LOG
 			std::cout << "[ERROR] g_DPlay scan failed!" << std::endl;
+#endif
 			return false;
 		}
 		g_DPlay = (CDPMng**)(g_DPlay_addr + 1);
 
 		auto g_dpLoginClient_addr = SigScan::Scan(0x401000, "B9 ?? ?? ?? ?? E8 ?? ?? ?? ?? B9 ?? ?? ?? ?? E8 ?? ?? ?? ?? A1 ?? ?? ?? ?? 3D FF");
 		if (g_dpLoginClient_addr == 0) {
+#ifdef NEUZPE_DEBUG_LOG
 			std::cout << "[ERROR] g_dpLoginClient scan failed!" << std::endl;
+#endif
 			return false;
 		}
 		g_dpLoginClient = (CDPMng**)(g_dpLoginClient_addr + 1);
@@ -93,7 +99,10 @@ namespace Net {
 
 	BOOL __fastcall DoSendHook(CClientSock * pThis, void* EDX, uint8_t* data, uint32_t data_size, uint32_t unk) {
 		std::vector<uint8_t> v(data, data + data_size);
+
+#ifdef NEUZPE_DEBUG_LOG
 		std::cout << "[Send] -> " << Util::bytes_to_hex_string(v) << std::endl;
+#endif
 
 		GUI::Get()->LogPacket(pThis, v);
 

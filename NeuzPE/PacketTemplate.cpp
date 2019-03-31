@@ -24,7 +24,6 @@ PacketTemplate::PacketTemplate(Net::CClientSock* sock, std::vector<uint8_t> data
 	this->random_mask.resize(this->data.size(), false);
 }
 
-
 PacketTemplate::PacketTemplate(std::string s)
 {
 	ParseString(s);

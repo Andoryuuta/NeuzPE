@@ -27,7 +27,9 @@ GUI::GUI()
 			auto pkt_to_send = pt.GenerateBinary();
 			auto sock = Net::GetCClientSockForName(PacketTemplate::ServerToString(pt.server));
 			if (sock != nullptr) {
-				std::cout << "NEWGUI: Gonna send: " << Util::bytes_to_hex_string(pkt_to_send) << std::endl;
+#ifdef NEUZPE_DEBUG_LOG
+				std::cout << "Inject button clicked, sending: " << Util::bytes_to_hex_string(pkt_to_send) << std::endl;
+#endif
 				Net::original_dosend(sock, pkt_to_send.data(), pkt_to_send.size(), 1);
 			}
 		}

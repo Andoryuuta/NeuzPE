@@ -7,5 +7,5 @@
 class SigScan
 {
 public:
-	static uint32_t Scan(uint32_t start_address, std::string sig);
+	static uint32_t Scan(uint32_t start_address, const std::string& sig);
 };

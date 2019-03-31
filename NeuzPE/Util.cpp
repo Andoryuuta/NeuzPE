@@ -11,15 +11,27 @@
 
 namespace Util {
 	// Open new console for c(in/out/err)
-	void OpenConsole()
+	bool OpenConsole()
 	{
-		AllocConsole();
+		if(!AllocConsole())
+		{
+			return false;
+		}
+
 		FILE* cinStream;
 		FILE* coutStream;
 		FILE* cerrStream;
-		freopen_s(&cinStream, "CONIN$", "r", stdin);
-		freopen_s(&coutStream, "CONOUT$", "w", stdout);
-		freopen_s(&cerrStream, "CONOUT$", "w", stderr);
+		if (freopen_s(&cinStream, "CONIN$", "r", stdin) != 0) {
+			return false;
+		}
+		if (freopen_s(&coutStream, "CONOUT$", "w", stdout) != 0) {
+			return false;
+		}
+		if (freopen_s(&cerrStream, "CONOUT$", "w", stderr) != 0) {
+			return false;
+		}
+
+		return true;
 	}
 
 	std::string bytes_to_hex_string(std::vector<uint8_t> data) {
@@ -43,8 +55,6 @@ namespace Util {
 		tmp.pop_back();
 		return tmp;
 	}
-
-
 
 	std::vector<uint8_t> hex_string_to_bytes(std::string str) {
 		std::vector<uint8_t> output;

@@ -4,15 +4,17 @@
 #include <fstream>
 #include <iomanip>
 
-#include "JMPManager.h"
 #include "GUI.h"
 #include "Net.h"
 #include "util.h"
 #include "SigScan.h"
 
 DWORD WINAPI MyFunc(LPVOID lpvParam) {
+#ifdef NEUZPE_DEBUG_LOG
 	Util::OpenConsole();
+#endif
 
+	// Sigscan for the global DPObjects which handle networking.
 	if (!Net::InitDPObjects()) {
 		using namespace nana;
 		form fm;
@@ -30,7 +32,9 @@ DWORD WINAPI MyFunc(LPVOID lpvParam) {
 				sock->m_pSock->vt != nullptr && 
 				sock->m_pSock->vt->DoSend != nullptr)
 			{
+#ifdef NEUZPE_DEBUG_LOG
 				std::cout << "Hooking DoSend at: 0x" << std::hex << sock->m_pSock->vt->DoSend << std::endl;
+#endif
 				
 				// Install vtable hook
 				Net::original_dosend = sock->m_pSock->vt->DoSend;
