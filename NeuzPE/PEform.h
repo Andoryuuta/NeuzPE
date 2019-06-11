@@ -37,13 +37,19 @@ public:
 		init_();
 
 		//<*ctor
-		caption("Packet Editor");
+		caption("Neuz Packet Editor");
 		notebook1_tbb.activated(0);
 		log_type_send_checkbox.check(true);
+
+		// Recv not implemented
+		log_type_recv_checkbox.check(false);
 		log_type_recv_checkbox.enabled(false);
+
 		log_server_auth.check(true);
 		log_server_login.check(true);
 		log_server_world.check(true);
+
+		spam_delay_textbox.caption("1000");
 
 		packet_listbox.append_header("Server", 70U);
 		packet_listbox.append_header("Dir", 50U);
@@ -154,10 +160,10 @@ private:
 		spam_group["_field_"] << spam_delay_label;
 		spam_delay_label.bgcolor(spam_group.bgcolor());
 		spam_delay_label.caption("Delay (ms):");
-		// spam_speed_textbox11
-		spam_speed_textbox11.create(spam_group);
-		spam_group["_field_"] << spam_speed_textbox11;
-		spam_speed_textbox11.multi_lines(false);
+		// spam_delay_textbox
+		spam_delay_textbox.create(spam_group);
+		spam_group["_field_"] << spam_delay_textbox;
+		spam_delay_textbox.multi_lines(false);
 		// log_options_padding_panel
 		log_options_padding_panel.create(log_options_panel);
 		log_options_panel_place["_field_"] << log_options_padding_panel;
@@ -170,12 +176,14 @@ private:
 		log_options_panel_place["_field_"] << inject_button;
 		inject_button.caption("Inject");
 		// sendlist_page
+		/*
 		sendlist_page.create(notebook1_pnl);
 		notebook1_tbb.push_back("Send list");
 		notebook1_tbb.tab_bgcolor(notebook1_tbb.length()-1, sendlist_page.bgcolor());
 		notebook1_tbb.tab_fgcolor(notebook1_tbb.length()-1, sendlist_page.fgcolor());
 		notebook1_tbb.attach(notebook1_tbb.length()-1, sendlist_page);
 		notebook1_plc["pages"].fasten(sendlist_page);
+		*/
 
 		_place.collocate();
 		notebook1_plc.collocate();
@@ -212,7 +220,7 @@ public:
 	nana::group spam_group;
 	nana::checkbox spam_checkbox;
 	nana::label spam_delay_label;
-	nana::textbox spam_speed_textbox11;
+	nana::textbox spam_delay_textbox;
 	nana::panel<true> log_options_padding_panel;
 	nana::button clear_button;
 	nana::button inject_button;

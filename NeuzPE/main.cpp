@@ -18,7 +18,9 @@ DWORD WINAPI MyFunc(LPVOID lpvParam) {
 	if (!Net::InitDPObjects()) {
 		using namespace nana;
 		form fm;
-		msgbox(fm, "Failed sigscan for DP / DirectPlay");
+		fm.events().unload(
+			msgbox(fm, "Failed sigscan for DP / DirectPlay").icon(msgbox::icon_error)<<"Failed sigscan for DP / DirectPlay"
+		);
 		fm.show();
 		exec();
 		return 0;
@@ -33,7 +35,7 @@ DWORD WINAPI MyFunc(LPVOID lpvParam) {
 				sock->m_pSock->vt->DoSend != nullptr)
 			{
 #ifdef NEUZPE_DEBUG_LOG
-				std::cout << "Hooking DoSend at: 0x" << std::hex << sock->m_pSock->vt->DoSend << std::endl;
+				std::cout << "Hooking " << Net::GetNameForCClientSock(sock->m_pSock) << "->DoSend at: 0x" << std::hex << sock->m_pSock->vt->DoSend << std::endl;
 #endif
 				
 				// Install vtable hook
@@ -46,7 +48,7 @@ DWORD WINAPI MyFunc(LPVOID lpvParam) {
 		};
 
 
-		if (test_hook((*Net::g_dpCertified)->m_pDPSock) || test_hook((*Net::g_DPlay)->m_pDPSock) || test_hook((*Net::g_dpLoginClient)->m_pDPSock)) {
+		if (test_hook((*Net::dp_auth)->m_pDPSock) || test_hook((*Net::dp_world)->m_pDPSock) || test_hook((*Net::dp_login)->m_pDPSock)) {
 			break;
 		}
 
@@ -60,12 +62,12 @@ DWORD WINAPI MyFunc(LPVOID lpvParam) {
 }
 
 
-BOOL APIENTRY DllMain(HMODULE hModule,
-	DWORD  ul_reason_for_call,
-	LPVOID lpReserved
-)
-{
-	switch (ul_reason_for_call)
+BOOL WINAPI DllMain(
+	HINSTANCE hinstDLL,
+	DWORD     fdwReason,
+	LPVOID    lpvReserved
+){
+	switch (fdwReason)
 	{
 	case DLL_PROCESS_ATTACH:
 		CreateThread(NULL, 0, MyFunc, 0, 0, NULL);

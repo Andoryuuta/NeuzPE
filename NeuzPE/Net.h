@@ -69,16 +69,16 @@ namespace Net {
 
 	extern DoSend_t original_dosend;
 
-	extern CDPMng** g_dpCertified;
-	extern CDPMng** g_DPlay;
-	extern CDPMng** g_dpLoginClient;
+	extern CDPMng** dp_auth;
+	extern CDPMng** dp_world;
+	extern CDPMng** dp_login;
 
 	std::string GetNameForCClientSock(CClientSock* sock);
 	CClientSock* GetCClientSockForName(std::string name);
 
 	BOOL __fastcall DoSendHook(CClientSock * pThis, void* EDX, uint8_t* data, uint32_t data_size, uint32_t unk);
 
-	// Does sigscans for the g_DPlay (world) and g_dpLoginClient (login) globals.
+	// Does sigscans for the direct play ("dp") globals.
 	// Returns false on failure.
 	bool InitDPObjects();
 };

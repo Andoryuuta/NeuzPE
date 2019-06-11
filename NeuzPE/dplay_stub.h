@@ -4,7 +4,6 @@
 #pragma once
 #include <Windows.h>
 
-
 /* NOTE: DPMSG_HOST and DPMSG_GENERIC share the same format */
 typedef struct tagDPMSG_GENERIC
 {

@@ -111,7 +111,7 @@ std::vector<uint8_t> PacketTemplate::GenerateBinary() {
 	output.reserve(this->data.size());
 
 	// Random number generator
-	std::default_random_engine rng((int)std::time(0));
+	std::default_random_engine rng(std::chrono::system_clock::now().time_since_epoch().count());
 	std::uniform_int_distribution<int> rng_dist(0, 255);
 
 	// Go over the data and random mask, generating random bytes as needed.
@@ -158,24 +158,24 @@ PacketTemplate::Server PacketTemplate::StringToServer(std::string s) {
 Net::CDPMng* PacketTemplate::ServerToDPMng(PacketTemplate::Server s) {
 	switch (s) {
 	case Server::AUTH:
-		return *Net::g_dpCertified;
+		return *Net::dp_auth;
 	case Server::LOGIN:
-		return *Net::g_dpLoginClient;
+		return *Net::dp_login;
 	case Server::WORLD:
-		return *Net::g_DPlay;
+		return *Net::dp_world;
 	default:
 		return nullptr;
 	}
 }
 
 PacketTemplate::Server PacketTemplate::DPMngToServer(Net::CDPMng* dp) {
-	if (dp == *Net::g_dpCertified) {
+	if (dp == *Net::dp_auth) {
 		return Server::AUTH;
 	}
-	else if (dp == *Net::g_dpLoginClient) {
+	else if (dp == *Net::dp_login) {
 		return Server::LOGIN;
 	}
-	else if (dp == *Net::g_DPlay) {
+	else if (dp == *Net::dp_world) {
 		return Server::WORLD;
 	}
 
