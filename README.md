@@ -4,6 +4,8 @@ NeuzPE is a semi-working, proof-of-concept, packet editor for the game FlyFF. ("
 
 I originally intended to come back and finish/polish this project more (and clean up the awful code), but I've lost interest in it and decided to un-private the repo in a semi-working state as of June/10/2019.
 
+![screenshot](https://github.com/Andoryuuta/NeuzPE/blob/master/screenshot/ss1.png)
+
 # Download & Building
 1. Clone the repo with submodules: `git clone --recurse-submodules https://github.com/Andoryuuta/NeuzPE`
 2. Configure and build [Nana](https://github.com/cnjinhao/nana):
