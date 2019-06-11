@@ -26,14 +26,14 @@ The built `.dll` simply needs to be injected into the game process with whatever
 
 # Other notes
 
-Packets are logged in the format of `[SERVER] [PACKET DIRECTION] ... data here ...` 
+Packets are logged in the format of `[SERVER] [PACKET DIRECTION] ... data here ...`  
 E.g. `[WORLD] [SEND] FF FF FF FF 71 00 20 02 0D 00 00 00 48 65 6C 6C 6F 2C 20 77 6F 72 6C 64 21`
 
-Packet bytes can be replaced with with `??` which will fill in a random byte before sending.
+Packet bytes can be replaced with with `??` which will fill in a random byte before sending.  
 E.g. `[WORLD] [SEND] FF FF FF FF 71 00 20 02 04 00 00 00 ?? ?? ?? ??`
 
 `Recv` logging/injection was never implemented, but could be implemented by hooking and calling the `Net::CDPMng` virtual functions: `SysMessageHandler` and `UserMessageHandler`.
 
-The send packet hook blocks while adding entries into the Nana gui, easily stalling the game when there is a large amount of packets being sent (read: anytime you move ingame). I meant to fix this with `moodycamel::ConcurrentQueue` or something, but I never got around to it.
+The `Send` packet hook blocks while adding entries into the Nana gui, easily stalling the game when there is a large amount of packets being sent (read: anytime you move ingame). I meant to fix this with `moodycamel::ConcurrentQueue` or something, but I never got around to it.
 
 If you are trying to use this in the future and the DirectPlay object byte sig scan isn't working, I've included the full disassembly of the function that the sigscan looks for at the bottom of `Net.cpp`, which includes a couple of strings you should be able to xref in IDA/Ghidra/Binja/Radare/Hopper/REDasm/whatever floats your static disassembly boat.
